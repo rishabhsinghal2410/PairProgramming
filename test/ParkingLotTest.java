@@ -1,5 +1,12 @@
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
+import java.util.Observable;
+
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
 /**
@@ -8,40 +15,31 @@ import static org.junit.Assert.*;
 public class ParkingLotTest {
 
     @Test
-    public void testIfParkingLotIsAvalaible() throws Exception {
-        ParkingLot parkingLot = new ParkingLot(3);
+    public void testIfParkingLotIsGenerated() throws Exception {
+        ParkingLot parkingLot = new ParkingLot(3,new ParkingLotOwner());
         assertNotNull(parkingLot);
     }
 
     @Test
     public void testIfParkingDone() throws Exception {
-        ParkingLot parkingLot = new ParkingLot(2);
+        ParkingLot parkingLot = new ParkingLot(2,new ParkingLotOwner());
         Car car = new Car();
         int parkingId = parkingLot.park(car);
         assertNotEquals(parkingId, 0);
     }
 
-    @Test(expected = Exception.class)
-    public void testParkingSpaceNotAvailable() throws Exception{
-        ParkingLot parkingLot = new ParkingLot(1);
-        Car car1 = new Car();
-        parkingLot.park(car1);
-        Car car2 = new Car();
-        parkingLot.park(car2);
-    }
-
     @Test
     public void testUnParkWhenCarAlreadyParked() throws Exception{
-        ParkingLot parkingLot = new ParkingLot(2);
+        ParkingLot parkingLot = new ParkingLot(2,new ParkingLotOwner());
         Car car = new Car();
         int parkingId =  parkingLot.park(car);
         Car returnedCar = parkingLot.unPark(parkingId);
-        assertEquals(car,returnedCar);
+        assertEquals(car, returnedCar);
     }
 
     @Test
     public void testUnParkAndCheckIfReturnedCarIsSame() throws Exception{
-        ParkingLot parkingLot = new ParkingLot(2);
+        ParkingLot parkingLot = new ParkingLot(2,new ParkingLotOwner());
         Car car = new Car();
         int parkingId =  parkingLot.park(car);
         parkingLot.unPark(parkingId);
@@ -50,10 +48,65 @@ public class ParkingLotTest {
 
     @Test
     public void testUnParkWhenCarNotParked(){
-        ParkingLot parkingLot = new ParkingLot(2);
+        ParkingLot parkingLot = new ParkingLot(2,new ParkingLotOwner());
         Car returnedCar = parkingLot.unPark(10);
         assertNull(returnedCar);
     }
 
+   /* @Test
+    public void testIfOwnerIsNotifiedWhenParkingIsFull(){
+        ParkingLotOwner parkingLotOwner = Mockito.mock(ParkingLotOwner.class);
+        Mockito.doNothing().when(parkingLotOwner).informParkingLotFull();
+        ParkingLot parkingLot = new ParkingLot(1, parkingLotOwner);
+
+        try {
+            parkingLot.park(new Car());
+            parkingLot.park(new Car());
+            fail();
+        } catch (Exception e) {
+            Mockito.verify(parkingLotOwner, Mockito.times(2)).informParkingLotFull();
+        }
+
+
+
+    }*/
+
+    @Test
+    public void testIfOwnerIsNotifiedWhenParkingIsFull(){
+        ParkingLotOwner parkingLotOwner = Mockito.mock(ParkingLotOwner.class);
+
+        ParkingLot parkingLot = new ParkingLot(1, parkingLotOwner);
+        Mockito.doNothing().when(parkingLotOwner).update(parkingLot,Boolean.TRUE);
+
+        try {
+            parkingLot.park(new Car());
+            parkingLot.park(new Car());
+            fail();
+        } catch (Exception e) {
+            Mockito.verify(parkingLotOwner, Mockito.times(2)).informParkingLotFull();
+        }
+
+
+
+    }
+
+
+    @Test
+    public void testIfOwnerIsNotifiedWhenParkingSpaceAvailable(){
+        ParkingLotOwner parkingLotOwner = Mockito.mock(ParkingLotOwner.class);
+        Mockito.doNothing().when(parkingLotOwner).informParkingLotFull();
+        ParkingLot parkingLot = new ParkingLot(1, parkingLotOwner);
+
+        try {
+            parkingLot.park(new Car());
+            parkingLot.park(new Car());
+            fail();
+        } catch (Exception e) {
+            Mockito.verify(parkingLotOwner, Mockito.times(2)).informParkingLotFull();
+        }
+
+
+
+    }
 
 }

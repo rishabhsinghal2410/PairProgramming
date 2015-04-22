@@ -8,9 +8,9 @@ import static org.junit.Assert.*;
 public class TravellerTest {
 
     @Test
-    public void testParkMyCar() throws Exception{
+    public void testParkMyCarIsDone() throws Exception{
         Traveller traveller = new Traveller(new Car());
-        ParkingLot parkingLot = new ParkingLot(2);
+        ParkingLot parkingLot = new ParkingLot(2,new ParkingLotOwner());
         int parkingId = traveller.parkMyCar(parkingLot);
         assertNotEquals(0,parkingId);
     }
@@ -18,7 +18,7 @@ public class TravellerTest {
     @Test(expected = Exception.class)
     public void testParkingNotDone() throws Exception{
         Traveller traveller = new Traveller(new Car());
-        ParkingLot parkingLot = new ParkingLot(2);
+        ParkingLot parkingLot = new ParkingLot(2,new ParkingLotOwner());
         traveller.parkMyCar(parkingLot);
         traveller.parkMyCar(parkingLot);
         traveller.parkMyCar(parkingLot);
@@ -36,7 +36,7 @@ public class TravellerTest {
     @Test
     public void testUnParkMyCarAndGetMyCar() throws Exception{
         Traveller traveller = new Traveller(new Car());
-        ParkingLot parkingLot = new ParkingLot(2);
+        ParkingLot parkingLot = new ParkingLot(2 , new ParkingLotOwner());
         traveller.parkMyCar(parkingLot);
         Car car = traveller.unParkMyCar(parkingLot);
         assertNotNull(car);
@@ -45,7 +45,7 @@ public class TravellerTest {
     @Test
     public void testUnParkMyCarWhenParkingWasNotDone(){
         Traveller traveller = new Traveller(new Car());
-        Car car = traveller.unParkMyCar(new ParkingLot(2));
+        Car car = traveller.unParkMyCar(new ParkingLot(2 , new ParkingLotOwner()));
         assertNull(car);
 
     }
