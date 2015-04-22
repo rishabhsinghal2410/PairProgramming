@@ -83,7 +83,7 @@ public class ParkingLotTest {
             parkingLot.park(new Car());
             fail();
         } catch (Exception e) {
-            Mockito.verify(parkingLotOwner, Mockito.times(2)).informParkingLotFull();
+            Mockito.verify(parkingLotOwner, Mockito.times(1)).update(parkingLot, Boolean.TRUE);
         }
 
 
@@ -94,15 +94,18 @@ public class ParkingLotTest {
     @Test
     public void testIfOwnerIsNotifiedWhenParkingSpaceAvailable(){
         ParkingLotOwner parkingLotOwner = Mockito.mock(ParkingLotOwner.class);
-        Mockito.doNothing().when(parkingLotOwner).informParkingLotFull();
-        ParkingLot parkingLot = new ParkingLot(1, parkingLotOwner);
 
+        ParkingLot parkingLot = new ParkingLot(1, parkingLotOwner);
+        Mockito.doNothing().when(parkingLotOwner).update(parkingLot , Boolean.FALSE);
+        int parkingId =-1;
         try {
+            parkingId = parkingLot.park(new Car());
             parkingLot.park(new Car());
-            parkingLot.park(new Car());
+
             fail();
         } catch (Exception e) {
-            Mockito.verify(parkingLotOwner, Mockito.times(2)).informParkingLotFull();
+            parkingLot.unPark(parkingId);
+            Mockito.verify(parkingLotOwner, Mockito.times(1)).update(parkingLot,Boolean.FALSE);
         }
 
 

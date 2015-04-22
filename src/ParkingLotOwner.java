@@ -7,28 +7,21 @@ import java.util.Observer;
  */
 public class ParkingLotOwner implements Observer{
 
-    
-
+    String message;
     @Override
     public void update(Observable o, Object arg) {
-        if(arg instanceof Boolean) {
-            Boolean isParkingFull = (Boolean) arg;
-            notifyParkingLotFull(isParkingFull);
-            notifyParkingSpaceAvailable(isParkingFull);
+        if(arg instanceof Boolean){
+            message = getMessage((Boolean)arg);
         }
-
     }
 
-    public void informParkingLotFull() {
+    public String getMessage(Boolean flag){
+        if(flag == Boolean.FALSE)
+            return "parking space is available";
+        return "parking lot is full";
     }
 
-    private void notifyParkingLotFull(Boolean isParkingFull) {
-        if(isParkingFull)
-        System.out.println("Parking Lot is Full");
-    }
-
-    private void notifyParkingSpaceAvailable(Boolean isParkingFull) {
-        if(!isParkingFull)
-        System.out.println("Parking Lot available");
+    public String getMessage(){
+        return message;
     }
 }
