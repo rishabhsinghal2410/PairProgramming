@@ -10,13 +10,13 @@ public class Traveller {
         this.car = car;
     }
 
-    public int parkMyCar(ParkingLot parkingLot) {
+    public int parkMyCar(ParkingLot parkingLot) throws Exception{
 
         parkingId = 0;
-        if(parkingLot != null) {
-            parkingId = parkingLot.park(car);
-            car = null;
-        }
+        if(parkingLot == null)
+            throw new Exception("NO parking lot!!!");
+        parkingId = parkingLot.park(car);
+        car = null;
         return parkingId;
     }
 

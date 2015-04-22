@@ -8,26 +8,25 @@ import static org.junit.Assert.*;
 public class TravellerTest {
 
     @Test
-    public void testParkMyCar(){
+    public void testParkMyCar() throws Exception{
         Traveller traveller = new Traveller(new Car());
         ParkingLot parkingLot = new ParkingLot(2);
         int parkingId = traveller.parkMyCar(parkingLot);
         assertNotEquals(0,parkingId);
     }
 
-    @Test
-    public void testParkingSpaceNotAvailable(){
+    @Test(expected = Exception.class)
+    public void testParkingNotDone() throws Exception{
         Traveller traveller = new Traveller(new Car());
         ParkingLot parkingLot = new ParkingLot(2);
         traveller.parkMyCar(parkingLot);
         traveller.parkMyCar(parkingLot);
         traveller.parkMyCar(parkingLot);
-        int parkingId = traveller.parkMyCar(parkingLot);
-        assertEquals(0, parkingId);
     }
 
-    @Test
-    public void testParkMyCarWhenParkingLotDoesNotExists(){
+
+    @Test(expected = Exception.class)
+    public void testParkMyCarWhenParkingLotDoesNotExists() throws Exception{
         Traveller traveller = new Traveller(new Car());
         ParkingLot parkingLot = null;
         int parkingId = traveller.parkMyCar(parkingLot);
@@ -35,7 +34,7 @@ public class TravellerTest {
     }
 
     @Test
-    public void testUnParkMyCar(){
+    public void testUnParkMyCarAndGetMyCar() throws Exception{
         Traveller traveller = new Traveller(new Car());
         ParkingLot parkingLot = new ParkingLot(2);
         traveller.parkMyCar(parkingLot);

@@ -16,17 +16,19 @@ public class ParkingLot {
         this.parkingLotSize=parkingLotSize;
     }
 
-    public int park( Car car)
+    // if parking space is available will park a car
+    // if parking space is not available it will say not available by returning 0
+    public int park( Car car) throws Exception
     {
            if(isParkingLotSpaceAvailable()){
                currentParkingOccupied = currentParkingOccupied +1;
                carParked.put(++parkingId, car);
                return parkingId;
            }
-        return 0;
+        throw new Exception("Parking not done");
     }
 
-    private boolean isParkingLotSpaceAvailable()
+    public boolean isParkingLotSpaceAvailable()
     {
         if(currentParkingOccupied < parkingLotSize)
             return true;
