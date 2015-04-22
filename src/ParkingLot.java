@@ -36,7 +36,7 @@ public class ParkingLot extends Observable{
                return parkingId;
            }
         setChanged();
-        notifyObservers(false);
+        notifyObservers(true);
         throw new Exception("Parking not done");
     }
 
@@ -51,7 +51,7 @@ public class ParkingLot extends Observable{
     public Car unPark(int parkingId){
         currentParkingOccupied--;
         setChanged();
-        notifyObservers(true);
+        notifyObservers(false);
         return carParked.get(parkingId);
     }
 
