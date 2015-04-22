@@ -9,16 +9,16 @@ public class TravellerTest {
 
     @Test
     public void testParkMyCar(){
-        Traveller traveller = new Traveller();
-        ParkingLot parkingLot = ParkingLot.getParkingLotInstance();
+        Traveller traveller = new Traveller(new Car());
+        ParkingLot parkingLot = new ParkingLot(2);
         int parkingId = traveller.parkMyCar(parkingLot);
         assertNotEquals(0,parkingId);
     }
 
     @Test
-    public void testParkMyCarNotAvailable(){
-        Traveller traveller = new Traveller();
-        ParkingLot parkingLot = ParkingLot.getParkingLotInstance();
+    public void testParkingSpaceNotAvailable(){
+        Traveller traveller = new Traveller(new Car());
+        ParkingLot parkingLot = new ParkingLot(2);
         traveller.parkMyCar(parkingLot);
         traveller.parkMyCar(parkingLot);
         traveller.parkMyCar(parkingLot);
@@ -27,8 +27,8 @@ public class TravellerTest {
     }
 
     @Test
-    public void testParkMyCarWhenParkingLotNull(){
-        Traveller traveller = new Traveller();
+    public void testParkMyCarWhenParkingLotDoesNotExists(){
+        Traveller traveller = new Traveller(new Car());
         ParkingLot parkingLot = null;
         int parkingId = traveller.parkMyCar(parkingLot);
         assertEquals(0, parkingId);
@@ -36,10 +36,19 @@ public class TravellerTest {
 
     @Test
     public void testUnParkMyCar(){
-        Traveller traveller = new Traveller();
-        ParkingLot parkingLot = ParkingLot.getParkingLotInstance();
+        Traveller traveller = new Traveller(new Car());
+        ParkingLot parkingLot = new ParkingLot(2);
+        traveller.parkMyCar(parkingLot);
         Car car = traveller.unParkMyCar(parkingLot);
         assertNotNull(car);
+    }
+
+    @Test
+    public void testUnParkMyCarWhenParkingWasNotDone(){
+        Traveller traveller = new Traveller(new Car());
+        Car car = traveller.unParkMyCar(new ParkingLot(2));
+        assertNull(car);
+
     }
 
 }

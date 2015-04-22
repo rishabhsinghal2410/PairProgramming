@@ -6,6 +6,10 @@ public class Traveller {
     private int parkingId;
     private Car car;
 
+    Traveller(Car car){
+        this.car = car;
+    }
+
     public int parkMyCar(ParkingLot parkingLot) {
 
         parkingId = 0;
@@ -18,6 +22,7 @@ public class Traveller {
 
     public Car unParkMyCar(ParkingLot parkingLot){
         Car car = parkingLot.unPark(parkingId);
+        this.car = car;
         return car;
     }
 

@@ -6,29 +6,22 @@ import java.util.Map;
  */
 public class ParkingLot {
 
-    private final int parkingLotSize = 3;
-    private int currentParkingOccupied = 0;
-    private static ParkingLot parkingLot = null;
+    private final int parkingLotSize ;
+    private int parkingId;
+    private int currentParkingOccupied;
     private Map<Integer, Car> carParked = new HashMap<Integer, Car>();
-    public static ParkingLot getParkingLotInstance()
-    {
-        if(parkingLot == null)
-        {
-            parkingLot = new ParkingLot();
-        }
-        return parkingLot;
-    }
 
-    private ParkingLot()
+    public ParkingLot(int parkingLotSize)
     {
+        this.parkingLotSize=parkingLotSize;
     }
 
     public int park( Car car)
     {
            if(isParkingLotSpaceAvailable()){
                currentParkingOccupied = currentParkingOccupied +1;
-               carParked.put(currentParkingOccupied, car);
-               return currentParkingOccupied;
+               carParked.put(++parkingId, car);
+               return parkingId;
            }
         return 0;
     }
