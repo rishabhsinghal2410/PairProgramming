@@ -1,4 +1,3 @@
-import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -9,13 +8,13 @@ public class ParkingLotOwner implements Observer{
 
     String message;
     @Override
-    public void update(Observable o, Object arg) {
-        if(arg instanceof Boolean){
-            message = getMessage((Boolean)arg);
+    public void update(Observable parkingLot, Object parkingLotStatus) {
+        if(parkingLotStatus instanceof Boolean){
+            message = setParkingLotStatusMessage((Boolean) parkingLotStatus);
         }
     }
 
-    public String getMessage(Boolean flag){
+    public String setParkingLotStatusMessage(Boolean flag){
         if(flag == Boolean.FALSE)
             return "parking space is available";
         return "parking lot is full";

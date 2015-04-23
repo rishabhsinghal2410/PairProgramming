@@ -53,30 +53,12 @@ public class ParkingLotTest {
         assertNull(returnedCar);
     }
 
-   /* @Test
-    public void testIfOwnerIsNotifiedWhenParkingIsFull(){
-        ParkingLotOwner parkingLotOwner = Mockito.mock(ParkingLotOwner.class);
-        Mockito.doNothing().when(parkingLotOwner).informParkingLotFull();
-        ParkingLot parkingLot = new ParkingLot(1, parkingLotOwner);
-
-        try {
-            parkingLot.park(new Car());
-            parkingLot.park(new Car());
-            fail();
-        } catch (Exception e) {
-            Mockito.verify(parkingLotOwner, Mockito.times(2)).informParkingLotFull();
-        }
-
-
-
-    }*/
-
     @Test
     public void testIfOwnerIsNotifiedWhenParkingIsFull(){
         ParkingLotOwner parkingLotOwner = Mockito.mock(ParkingLotOwner.class);
 
         ParkingLot parkingLot = new ParkingLot(1, parkingLotOwner);
-        Mockito.doNothing().when(parkingLotOwner).update(parkingLot,Boolean.TRUE);
+        Mockito.doNothing().when(parkingLotOwner).update(parkingLot, Boolean.TRUE);
 
         try {
             parkingLot.park(new Car());
@@ -90,13 +72,12 @@ public class ParkingLotTest {
 
     }
 
-
     @Test
     public void testIfOwnerIsNotifiedWhenParkingSpaceAvailable(){
         ParkingLotOwner parkingLotOwner = Mockito.mock(ParkingLotOwner.class);
 
         ParkingLot parkingLot = new ParkingLot(1, parkingLotOwner);
-        Mockito.doNothing().when(parkingLotOwner).update(parkingLot , Boolean.FALSE);
+        Mockito.doNothing().when(parkingLotOwner).update(parkingLot, Boolean.FALSE);
         int parkingId =-1;
         try {
             parkingId = parkingLot.park(new Car());
@@ -105,11 +86,38 @@ public class ParkingLotTest {
             fail();
         } catch (Exception e) {
             parkingLot.unPark(parkingId);
-            Mockito.verify(parkingLotOwner, Mockito.times(1)).update(parkingLot,Boolean.FALSE);
+            Mockito.verify(parkingLotOwner, Mockito.times(1)).update(parkingLot, Boolean.FALSE);
         }
-
-
-
     }
 
+    @Test
+    public void testIfFBIAgentIsNotifiedOfParkingLot80percentFull()throws Exception{
+        FBIAgent fbiAgent = Mockito.mock(FBIAgent.class);
+        ParkingLotOwner parkingLotOwner = Mockito.mock(ParkingLotOwner.class);
+        ParkingLot parkingLot = new ParkingLot(5, parkingLotOwner);
+        Mockito.doNothing().when(fbiAgent).update(parkingLot, Boolean.TRUE);
+        parkingLot.addParkingLotObservers(fbiAgent);
+        parkingLot.park(new Car());
+        parkingLot.park(new Car());
+        parkingLot.park(new Car());
+        parkingLot.park(new Car());
+        Mockito.verify(fbiAgent,Mockito.times(1)).update(parkingLot, Boolean.TRUE);
+    }
+
+    @Test
+    public void testIfFBIAgentIsNotifiedOfParkingLotLessThan80percentFull()throws Exception{
+        FBIAgent fbiAgent = Mockito.mock(FBIAgent.class);
+        ParkingLotOwner parkingLotOwner = Mockito.mock(ParkingLotOwner.class);
+        ParkingLot parkingLot = new ParkingLot(5, parkingLotOwner);
+        Mockito.doNothing().when(fbiAgent).update(parkingLot, Boolean.FALSE);
+        parkingLot.addParkingLotObservers(fbiAgent);
+        parkingLot.park(new Car());
+        parkingLot.park(new Car());
+        parkingLot.park(new Car());
+        int parkingId1 = parkingLot.park(new Car());
+        int parkingId = parkingLot.park(new Car());
+        parkingLot.unPark(parkingId);
+        parkingLot.unPark(parkingId1);
+        Mockito.verify(fbiAgent,Mockito.times(1)).update(parkingLot, Boolean.FALSE);
+    }
 }
