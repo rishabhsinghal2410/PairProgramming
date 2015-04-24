@@ -37,7 +37,8 @@ public class ParkingLotAttendant {
         if(parkingReciept == null)
             throw new Exception("Parking reciept is not available");
         ParkingLot parkingLot = getParkingLotForParkingReciept(parkingReciept);
-        return parkingLot.unPark(parkingReciept);
+        Car car = parkingLot.unPark(parkingReciept);
+        return car;
     }
 
     public void updateParkingLotStrategy(boolean todayIsFestival) {

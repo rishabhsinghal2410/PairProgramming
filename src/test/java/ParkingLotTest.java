@@ -3,6 +3,9 @@ import org.mockito.Mockito;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /**
  * Created by welcome on 21-04-2015.
@@ -44,13 +47,13 @@ public class ParkingLotTest {
     @Test
     public void testUnParkWhenCarNotParked(){
         ParkingLot parkingLot = new ParkingLot(1,2,new ParkingLotOwner());
-        Car returnedCar = parkingLot.unPark(new ParkingReciept(1,123));
+        Car returnedCar = parkingLot.unPark(new ParkingReciept(1, 123));
         assertNull(returnedCar);
     }
 
     @Test
     public void testIfOwnerIsNotifiedWhenParkingIsFull(){
-        ParkingLotOwner parkingLotOwner = Mockito.mock(ParkingLotOwner.class);
+        ParkingLotOwner parkingLotOwner = mock(ParkingLotOwner.class);
 
         ParkingLot parkingLot = new ParkingLot(1,1, parkingLotOwner);
         Mockito.doNothing().when(parkingLotOwner).update(parkingLot, Boolean.TRUE);
@@ -69,7 +72,7 @@ public class ParkingLotTest {
 
     @Test
     public void testIfOwnerIsNotifiedWhenParkingSpaceAvailable(){
-        ParkingLotOwner parkingLotOwner = Mockito.mock(ParkingLotOwner.class);
+        ParkingLotOwner parkingLotOwner = mock(ParkingLotOwner.class);
 
         ParkingLot parkingLot = new ParkingLot(1,1, parkingLotOwner);
         Mockito.doNothing().when(parkingLotOwner).update(parkingLot, Boolean.FALSE);
@@ -87,8 +90,8 @@ public class ParkingLotTest {
 
     @Test
     public void testIfFBIAgentIsNotifiedOfParkingLot80percentFull()throws Exception{
-        FBIAgent fbiAgent = Mockito.mock(FBIAgent.class);
-        ParkingLotOwner parkingLotOwner = Mockito.mock(ParkingLotOwner.class);
+        FBIAgent fbiAgent = mock(FBIAgent.class);
+        ParkingLotOwner parkingLotOwner = mock(ParkingLotOwner.class);
         ParkingLot parkingLot = new ParkingLot(1,5, parkingLotOwner);
         Mockito.doNothing().when(fbiAgent).update(parkingLot, Boolean.TRUE);
         parkingLot.addParkingLotObservers(fbiAgent);
@@ -101,8 +104,8 @@ public class ParkingLotTest {
 
     @Test
     public void testIfFBIAgentIsNotifiedOfParkingLotLessThan80percentFull()throws Exception{
-        FBIAgent fbiAgent = Mockito.mock(FBIAgent.class);
-        ParkingLotOwner parkingLotOwner = Mockito.mock(ParkingLotOwner.class);
+        FBIAgent fbiAgent = mock(FBIAgent.class);
+        ParkingLotOwner parkingLotOwner = mock(ParkingLotOwner.class);
         ParkingLot parkingLot = new ParkingLot(1,5, parkingLotOwner);
         Mockito.doNothing().when(fbiAgent).update(parkingLot, Boolean.FALSE);
         parkingLot.addParkingLotObservers(fbiAgent);
@@ -118,11 +121,11 @@ public class ParkingLotTest {
 
     @Test
     public void testIfFBIAgentIsNotifiedOfParkingLot80percentFullAndOwnerIsNotNotified()throws Exception{
-        FBIAgent fbiAgent = Mockito.mock(FBIAgent.class);
-        ParkingLotOwner parkingLotOwner = Mockito.mock(ParkingLotOwner.class);
+        FBIAgent fbiAgent = mock(FBIAgent.class);
+        ParkingLotOwner parkingLotOwner = mock(ParkingLotOwner.class);
         ParkingLot parkingLot = new ParkingLot(1,5, parkingLotOwner);
         Mockito.doNothing().when(fbiAgent).update(parkingLot, Boolean.TRUE);
-        Mockito.doNothing().when(parkingLotOwner).update(parkingLot,Boolean.TRUE);
+        Mockito.doNothing().when(parkingLotOwner).update(parkingLot, Boolean.TRUE);
         parkingLot.addParkingLotObservers(fbiAgent);
         parkingLot.park(new Car(12));
         parkingLot.park(new Car(23));
@@ -133,25 +136,52 @@ public class ParkingLotTest {
 
     @Test
     public void testIfSpaceAvailableInParkingLotUpdatesCorrectly() throws Exception{
-        ParkingLotOwner parkingLotOwner = Mockito.mock(ParkingLotOwner.class);
+        ParkingLotOwner parkingLotOwner = mock(ParkingLotOwner.class);
         ParkingLot parkingLot = new ParkingLot(1,5, parkingLotOwner);
-        parkingLot.park(Mockito.mock(Car.class));
-        parkingLot.park(Mockito.mock(Car.class));
-        parkingLot.park(Mockito.mock(Car.class));
+        parkingLot.park(mock(Car.class));
+        parkingLot.park(mock(Car.class));
+        parkingLot.park(mock(Car.class));
         boolean spaceAvailable = parkingLot.isSpaceAvailable();
         assertThat(spaceAvailable, is(true));
     }
 
     @Test
     public void testIfSpaceAvailableInParkingLotUpdatesCorrectlyWhenFull() throws Exception{
-        ParkingLotOwner parkingLotOwner = Mockito.mock(ParkingLotOwner.class);
+        ParkingLotOwner parkingLotOwner = mock(ParkingLotOwner.class);
         ParkingLot parkingLot = new ParkingLot(1,5, parkingLotOwner);
-        parkingLot.park(Mockito.mock(Car.class));
-        parkingLot.park(Mockito.mock(Car.class));
-        parkingLot.park(Mockito.mock(Car.class));
-        parkingLot.park(Mockito.mock(Car.class));
-        parkingLot.park(Mockito.mock(Car.class));
+        parkingLot.park(mock(Car.class));
+        parkingLot.park(mock(Car.class));
+        parkingLot.park(mock(Car.class));
+        parkingLot.park(mock(Car.class));
+        parkingLot.park(mock(Car.class));
         boolean spaceAvailable = parkingLot.isSpaceAvailable();
         assertThat(spaceAvailable, is(false));
+    }
+
+    @Test
+    public void shouldNotifyPoliceDepartmentWhenCarIsNotFoundWhileUnparkTheCar() throws Exception {
+
+        PoliceDepartment policeDepartment = mock(PoliceDepartment.class);
+        ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
+        ParkingLot parkingLot = new ParkingLot(1, 3, parkingLotOwner);
+        parkingLot.addMissingCarObservers(policeDepartment);
+        ParkingReciept reciept = new ParkingReciept(1,1);
+        Car car = parkingLot.unPark(reciept);
+        assertNull(car);
+        verify(policeDepartment).update(parkingLot, reciept);
+
+    }
+
+    @Test
+    public void shouldNotNotifyPoliceDepartmentWhenCarIsFoundWhileUnparkTheCar() throws Exception {
+        PoliceDepartment policeDepartment = mock(PoliceDepartment.class);
+        Car car = new Car(2);
+        ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
+        ParkingLot parkingLot = new ParkingLot(1, 3, parkingLotOwner);
+        parkingLot.addMissingCarObservers(policeDepartment);
+        ParkingReciept reciept = parkingLot.park(car);
+        Car carReceived = parkingLot.unPark(reciept);
+        assertNotNull(carReceived);
+        verify(policeDepartment,times(0)).update(parkingLot,reciept);
     }
 }

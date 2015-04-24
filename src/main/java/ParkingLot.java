@@ -11,6 +11,7 @@ public class ParkingLot extends Observable implements Comparable{
     private ParkingLotOwner parkingLotOwner;
     private Map<Integer, Car> carParked = new HashMap<Integer, Car>();
     private List<Observer> parkingLotObservers = new ArrayList<Observer>();
+    private List<Observer> missingCarObservers = new ArrayList<Observer>();
     private boolean notifiedObservers = false;
 
 
@@ -47,7 +48,7 @@ public class ParkingLot extends Observable implements Comparable{
         double percentOccupied = ((double)currentParkingOccupied)/((double)parkingLotSize);
         if(percentOccupied >= 0.8) {
             notifiedObservers = true;
-            notifyParkingLotObservers(Boolean.TRUE);
+            notifyParkingLotObservers(Boolean.TRUE, parkingLotObservers);
         }
     }
 
@@ -55,7 +56,7 @@ public class ParkingLot extends Observable implements Comparable{
         double percentOccupied = ((double)currentParkingOccupied)/((double)parkingLotSize);
         if(percentOccupied < 0.8 && notifiedObservers) {
             notifiedObservers = false;
-            notifyParkingLotObservers(Boolean.FALSE);
+            notifyParkingLotObservers(Boolean.FALSE,parkingLotObservers);
         }
     }
 
@@ -74,14 +75,20 @@ public class ParkingLot extends Observable implements Comparable{
         checkLessThan80percentFullAndNotify();
         setChanged();
         notifyObservers(false);
-        return carParked.get(parkingReciept.getVehicleId());
+        Car car = carParked.get(parkingReciept.getVehicleId());
+        informPoliceDepartmentOfMissingCar(parkingReciept, car);
+        return  car;
     }
 
     public void addParkingLotObservers(Observer observer){
         parkingLotObservers.add(observer);
     }
 
-    public void notifyParkingLotObservers(Object valueToSend){
+    public void addMissingCarObservers(Observer observer){
+        missingCarObservers.add(observer);
+    }
+
+    public void notifyParkingLotObservers(Object valueToSend, List<Observer> parkingLotObservers){
         for(Observer observers : parkingLotObservers){
             observers.update(this, valueToSend);
         }
@@ -96,6 +103,11 @@ public class ParkingLot extends Observable implements Comparable{
 
     public int getParkingLotId() {
         return parkingLotId;
+    }
+
+    private void informPoliceDepartmentOfMissingCar( ParkingReciept parkingReciept, Car car){
+        if(car == null)
+            notifyParkingLotObservers(parkingReciept, missingCarObservers);
     }
 
     @Override
