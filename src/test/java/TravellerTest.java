@@ -1,7 +1,8 @@
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.*;
 
 /**
  * Created by welcome on 21-04-2015.
@@ -10,25 +11,14 @@ public class TravellerTest {
 
     @Test
     public void testParkMyCarIsDone() throws Exception{
-        /*Traveller traveller = new Traveller(new Car(123));
-        ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
-        ParkingLot parkingLot1 = new ParkingLot(1,2,parkingLotOwner);
-        ParkingLot parkingLot2 = new ParkingLot(2,2,parkingLotOwner);
-        ParkingLotAttendant parkingLotAttendant = new ParkingLotAttendant(parkingLotOwner.getParkingLotsToBeDelegated());
-        ParkingReciept parkingReciept = traveller.parkMyCar(parkingLotAttendant);
-        assertNotNull(parkingReciept);*/
         Car car = new Car(12);
         Traveller traveller = new Traveller(car);
         ParkingLotAttendant parkingLotAttendant = Mockito.mock(ParkingLotAttendant.class);
-        //ParkingLot parkingLot = Mockito.mock(ParkingLot.class);
         ParkingReciept parkingReciept = new ParkingReciept(1,1);
         Mockito.when(parkingLotAttendant.parkTravellersCar(car)).thenReturn(parkingReciept);
         ParkingReciept parkingReciept1 = traveller.parkMyCar(parkingLotAttendant);
-        //assertEquals(parkingReciept,parkingReciept1);
         Mockito.verify(parkingLotAttendant,Mockito.times(1)).parkTravellersCar(car);
-        //assertThat(parkingId, is(10));
-        //Mockito.verify(parkingLotAttendant,Mockito.times(1)).getParkingLotWithSpaceAvailable();
-        //Mockito.verify(parkingLot,Mockito.times(1)).park(Mockito.mock(Car.class));
+        assertThat(parkingReciept1.getParkingLotId(), is(1));
     }
 
     @Test(expected = Exception.class)
@@ -47,16 +37,20 @@ public class TravellerTest {
         traveller4.parkMyCar(parkingLotAttendant);
     }
 
-/*
+
     @Test(expected = Exception.class)
     public void testParkMyCarWhenParkingLotDoesNotExists() throws Exception{
+        Car car = new Car(12);
         Traveller traveller = new Traveller(new Car(12));
+        ParkingLotAttendant parkingLotAttendant = Mockito.mock(ParkingLotAttendant.class);
+        ParkingReciept parkingReciept = new ParkingReciept(1,1);
+        Mockito.when(parkingLotAttendant.parkTravellersCar(car)).thenThrow(Exception.class);
         ParkingLot parkingLot = null;
-        int parkingId = traveller.parkMyCar(parkingLot);
-        assertEquals(0, parkingId);
-    }*/
+        ParkingReciept parkingReciept1 = traveller.parkMyCar(parkingLotAttendant);
+        assertNull(parkingReciept1);
+    }
 
-    /*@Test
+    @Test
     public void testUnParkMyCarAndGetMyCar() throws Exception{
         Traveller traveller = new Traveller(new Car(12));
         ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
@@ -69,11 +63,16 @@ public class TravellerTest {
         assertNotNull(car);
     }
 
-    /*@Test
-    public void testUnParkMyCarWhenParkingWasNotDone(){
+    @Test(expected = Exception.class)
+    public void testUnParkMyCarWhenParkingWasNotDone() throws Exception{
         Traveller traveller = new Traveller(new Car(12));
-        Car car = traveller.unParkMyCar(new ParkingLot(1,2 , new ParkingLotOwner()));
+        ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
+        ParkingLot parkingLot1 = new ParkingLot(1,2 , parkingLotOwner);
+        ParkingLot parkingLot2 = new ParkingLot(2,2 , parkingLotOwner);
+        ParkingLotAttendant parkingLotAttendant = new ParkingLotAttendant(parkingLotOwner.getParkingLotsToBeDelegated());
+        parkingLotAttendant.updateParkingLotStrategy(false);
+        Car car = traveller.unParkMyCar(parkingLotAttendant);
         assertNull(car);
-    }*/
+    }
 
 }

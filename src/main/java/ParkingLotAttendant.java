@@ -34,6 +34,8 @@ public class ParkingLotAttendant {
     }
 
     public Car unParkTravellersCar(ParkingReciept parkingReciept) throws Exception{
+        if(parkingReciept == null)
+            throw new Exception("Parking reciept is not available");
         ParkingLot parkingLot = getParkingLotForParkingReciept(parkingReciept);
         return parkingLot.unPark(parkingReciept);
     }

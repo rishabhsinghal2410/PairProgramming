@@ -11,7 +11,7 @@ public class Traveller {
     }
 
     public ParkingReciept parkMyCar(ParkingLotAttendant parkingLotAttendant) throws Exception{
-        parkingLotAttendant.parkTravellersCar(car);
+        this.parkingReciept = parkingLotAttendant.parkTravellersCar(car);
         car = null;
         return parkingReciept;
     }

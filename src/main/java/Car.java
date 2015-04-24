@@ -3,9 +3,15 @@
  */
 public class Car {
     private int carId;
+    private CarType carType;
 
     public Car(int carId){
         this.carId = carId;
+    }
+
+    public Car(int carId, CarType carType){
+        this.carId = carId;
+        this.carType = carType;
     }
 
     public int getCarId() {
