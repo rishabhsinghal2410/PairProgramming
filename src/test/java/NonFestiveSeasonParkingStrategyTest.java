@@ -17,7 +17,7 @@ public class NonFestiveSeasonParkingStrategyTest {
         List<ParkingLot> parkingLotList = new ArrayList<ParkingLot>();
         parkingLotList.add(new ParkingLot(1,1,new ParkingLotOwner()));
 
-        ParkingLot parkingLot = nonFestiveSeasonParkingStrategy.getParkingLotWithSpaceAvailable(parkingLotList);
+        ParkingLot parkingLot = nonFestiveSeasonParkingStrategy.getParkingLotWithSpaceAvailable(parkingLotList,new Car(101,CarType.MINI));
         assertTrue(parkingLot.isSpaceAvailable());
     }
 

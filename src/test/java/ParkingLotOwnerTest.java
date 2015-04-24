@@ -2,9 +2,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by welcome on 22-04-2015.
- */
 public class ParkingLotOwnerTest {
 
     @Test

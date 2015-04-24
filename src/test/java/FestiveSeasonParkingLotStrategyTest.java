@@ -1,3 +1,4 @@
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class FestiveSeasonParkingLotStrategyTest {
         FestiveSeasonParkingLotStrategy festiveSeasonParkingLotStrategy = new FestiveSeasonParkingLotStrategy();
         List<ParkingLot> parkingLotList = new ArrayList<ParkingLot>();
         parkingLotList.add(new ParkingLot(1,2,new ParkingLotOwner()));
-        ParkingLot parkingLot = festiveSeasonParkingLotStrategy.getParkingLotWithSpaceAvailable(parkingLotList);
+        ParkingLot parkingLot = festiveSeasonParkingLotStrategy.getParkingLotWithSpaceAvailable(parkingLotList,new Car(101,CarType.MINI));
         assertNotNull(parkingLot);
     }
 
@@ -30,7 +31,7 @@ public class FestiveSeasonParkingLotStrategyTest {
         parkingLotList.add(new ParkingLot(2,3,owner));
         parkingLotList.add(new ParkingLot(3,5,owner));
 
-        ParkingLot parkingLot = festiveSeasonParkingLotStrategy.getParkingLotWithSpaceAvailable(parkingLotList);
+        ParkingLot parkingLot = festiveSeasonParkingLotStrategy.getParkingLotWithSpaceAvailable(parkingLotList,new Car(101,CarType.MINI));
         assertThat(parkingLot.getParkingLotId(), is(3));
 
     }
@@ -46,7 +47,7 @@ public class FestiveSeasonParkingLotStrategyTest {
 
         when(parkingLot.isSpaceAvailable()).thenReturn(false);
         try {
-            festiveSeasonParkingLotStrategy.getParkingLotWithSpaceAvailable(parkingLotList);
+            festiveSeasonParkingLotStrategy.getParkingLotWithSpaceAvailable(parkingLotList,new Car(102,CarType.MINI));
         }catch(Exception e){
             errMsg = e.getMessage();
         }

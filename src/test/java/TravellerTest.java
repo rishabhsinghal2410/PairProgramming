@@ -4,9 +4,6 @@ import org.mockito.Mockito;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
-/**
- * Created by welcome on 21-04-2015.
- */
 public class TravellerTest {
 
     @Test

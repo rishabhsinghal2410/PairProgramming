@@ -1,9 +1,6 @@
 import java.util.Observable;
 import java.util.Observer;
 
-/**
- * Created by welcome on 23-04-2015.
- */
 public class FBIAgent implements Observer {
    String parkingLotStatusMessage;
     @Override

@@ -3,9 +3,6 @@ import org.mockito.Mockito;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by welcome on 23-04-2015.
- */
 public class FBIAgentTest {
 
     @Test

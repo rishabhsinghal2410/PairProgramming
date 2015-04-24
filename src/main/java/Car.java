@@ -1,12 +1,14 @@
-/**
- * Created by welcome on 21-04-2015.
- */
+
 public class Car {
     private int carId;
     private CarType carType;
 
     public Car(int carId){
         this.carId = carId;
+    }
+
+    public CarType getCarType() {
+        return carType;
     }
 
     public Car(int carId, CarType carType){

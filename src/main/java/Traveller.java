@@ -1,6 +1,4 @@
-/**
- * Created by welcome on 21-04-2015.
- */
+
 public class Traveller {
 
     private ParkingReciept parkingReciept;

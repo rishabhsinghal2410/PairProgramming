@@ -7,9 +7,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-/**
- * Created by welcome on 21-04-2015.
- */
 public class ParkingLotTest {
 
     @Test

@@ -3,9 +3,6 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-/**
- * Created by welcome on 22-04-2015.
- */
 public class ParkingLotOwner implements Observer {
 
     private final List<ParkingLot> parkingLots = new ArrayList<>();

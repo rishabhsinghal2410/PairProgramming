@@ -6,11 +6,8 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-/**
- * Created by welcome on 23-04-2015.
- */
 public class ParkingLotAttendantTest {
 
     @Test
@@ -64,5 +61,31 @@ public class ParkingLotAttendantTest {
         parkingLotOwner.informParkingAttendantAboutTodaysFestival();
         ParkingReciept parkingReciept = parkingLotAttendant.parkTravellersCar(new Car(12));
         assertThat(parkingReciept.getParkingLotId(), is(2));
+    }
+
+    @Test
+
+    public void testIfLargeCarsCanBeDirectedToLotsWithMostFreeSpace() throws Exception {
+        ParkingLot parkingLot1= mock(ParkingLot.class);
+        when(parkingLot1.getParkingLotSize()).thenReturn(5);
+        when(parkingLot1.getCurrentParkingOccupied()).thenReturn(2);
+        when(parkingLot1.getParkingLotId()).thenReturn(101);
+        ParkingLot parkingLot2= mock(ParkingLot.class);
+        when(parkingLot2.getParkingLotSize()).thenReturn(3);
+        when(parkingLot2.getCurrentParkingOccupied()).thenReturn(1);
+        when(parkingLot2.getParkingLotId()).thenReturn(102);
+        ParkingLot parkingLot3= mock(ParkingLot.class);
+        when(parkingLot3.getParkingLotSize()).thenReturn(4);
+        when(parkingLot3.getCurrentParkingOccupied()).thenReturn(2);
+        when(parkingLot3.getParkingLotId()).thenReturn(103);
+        List<ParkingLot> parkingLots=new ArrayList<>();
+        parkingLots.add(parkingLot1);
+        parkingLots.add(parkingLot2);
+        parkingLots.add(parkingLot3);
+        ParkingLotAttendant parkingLotAttendant=new ParkingLotAttendant(parkingLots);
+        parkingLotAttendant.updateParkingLotStrategy(false);
+       ParkingReciept parkingReciept= parkingLotAttendant.parkTravellersCar(new Car(101, CarType.HATCHBACK));
+        assertEquals(101,parkingReciept.getParkingLotId());
+
     }
 }
