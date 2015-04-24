@@ -15,7 +15,7 @@ public class PoliceDepartmentTest {
         ParkingLot parkingLot = mock(ParkingLot.class);
         ParkingReciept parkingReciept = new ParkingReciept(1,20);
         PoliceDepartment policeDepartment = new PoliceDepartment();
-        policeDepartment.update(parkingLot, parkingReciept);
+        policeDepartment.missingVehicleUpdate(parkingLot, parkingReciept);
         assertEquals(policeDepartment.getReportMessage(),"Car missing with car id :20");
     }
 

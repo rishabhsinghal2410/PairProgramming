@@ -8,8 +8,9 @@ public class ParkingLot extends Observable implements Comparable {
     private ParkingLotOwner parkingLotOwner;
     private Map<Integer, Car> carParked = new HashMap<Integer, Car>();
     private List<Observer> parkingLotObservers = new ArrayList<Observer>();
-    private List<Observer> missingCarObservers = new ArrayList<Observer>();
+    private List<MissingVehicleObserver> missingCarObservers = new ArrayList<>();
     private boolean notifiedObservers = false;
+
     public ParkingLot(int parkingLotId, int parkingLotSize, ParkingLotOwner parkingLotOwner) {
         this.parkingLotId = parkingLotId;
         this.parkingLotSize = parkingLotSize;
@@ -76,7 +77,7 @@ public class ParkingLot extends Observable implements Comparable {
         setChanged();
         notifyObservers(false);
         Car car = carParked.get(parkingReciept.getVehicleId());
-        informPoliceDepartmentOfMissingCar(parkingReciept, car);
+        informOfMissingCar(parkingReciept, car);
         return  car;
     }
 
@@ -84,13 +85,19 @@ public class ParkingLot extends Observable implements Comparable {
         parkingLotObservers.add(observer);
     }
 
-    public void addMissingCarObservers(Observer observer){
+    public void addMissingCarObservers(MissingVehicleObserver observer){
         missingCarObservers.add(observer);
     }
 
     public void notifyParkingLotObservers(Object valueToSend, List<Observer> parkingLotObservers){
         for(Observer observers : parkingLotObservers){
             observers.update(this, valueToSend);
+        }
+    }
+
+    public void notifymissingVehicleObservers(Object valueToSend, List<MissingVehicleObserver> parkingLotObservers){
+        for(MissingVehicleObserver observers : parkingLotObservers){
+            observers.missingVehicleUpdate(this, valueToSend);
         }
     }
 
@@ -105,9 +112,9 @@ public class ParkingLot extends Observable implements Comparable {
         return parkingLotId;
     }
 
-    private void informPoliceDepartmentOfMissingCar( ParkingReciept parkingReciept, Car car){
+    private void informOfMissingCar(ParkingReciept parkingReciept, Car car){
         if(car == null)
-            notifyParkingLotObservers(parkingReciept, missingCarObservers);
+            notifymissingVehicleObservers(parkingReciept, missingCarObservers);
     }
 
     @Override

@@ -96,7 +96,7 @@ public class ParkingLotTest {
         parkingLot.park(new Car(23));
         parkingLot.park(new Car(34));
         parkingLot.park(new Car(45));
-        Mockito.verify(fbiAgent,Mockito.times(1)).update(parkingLot, Boolean.TRUE);
+        Mockito.verify(fbiAgent, Mockito.times(1)).update(parkingLot, Boolean.TRUE);
     }
 
     @Test
@@ -165,7 +165,7 @@ public class ParkingLotTest {
         ParkingReciept reciept = new ParkingReciept(1,1);
         Car car = parkingLot.unPark(reciept);
         assertNull(car);
-        verify(policeDepartment).update(parkingLot, reciept);
+        verify(policeDepartment).missingVehicleUpdate(parkingLot, reciept);
 
     }
 
@@ -179,6 +179,33 @@ public class ParkingLotTest {
         ParkingReciept reciept = parkingLot.park(car);
         Car carReceived = parkingLot.unPark(reciept);
         assertNotNull(carReceived);
-        verify(policeDepartment,times(0)).update(parkingLot,reciept);
+        verify(policeDepartment,times(0)).missingVehicleUpdate(parkingLot, reciept);
+    }
+
+    @Test
+    public void shouldNotifyFBIAgentWhenCarIsNotFoundWhileUnparkTheCar() throws Exception {
+
+        FBIAgent fbiAgent = mock(FBIAgent.class);
+        ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
+        ParkingLot parkingLot = new ParkingLot(1, 3, parkingLotOwner);
+        parkingLot.addMissingCarObservers(fbiAgent);
+        ParkingReciept reciept = new ParkingReciept(1,1);
+        Car car = parkingLot.unPark(reciept);
+        assertNull(car);
+        verify(fbiAgent).missingVehicleUpdate(parkingLot, reciept);
+
+    }
+
+    @Test
+    public void shouldNotNotifyFBIAgentWhenCarIsFoundWhileUnparkTheCar() throws Exception {
+        FBIAgent fbiAgent = mock(FBIAgent.class);
+        Car car = new Car(2);
+        ParkingLotOwner parkingLotOwner = new ParkingLotOwner();
+        ParkingLot parkingLot = new ParkingLot(1, 3, parkingLotOwner);
+        parkingLot.addMissingCarObservers(fbiAgent);
+        ParkingReciept reciept = parkingLot.park(car);
+        Car carReceived = parkingLot.unPark(reciept);
+        assertNotNull(carReceived);
+        verify(fbiAgent,times(0)).missingVehicleUpdate(parkingLot, reciept);
     }
 }
