@@ -13,6 +13,7 @@ public class ParkingLot extends Observable implements Comparable{
     private List<Observer> parkingLotObservers = new ArrayList<Observer>();
     private boolean notifiedObservers = false;
 
+
     public ParkingLot( int parkingLotId, int parkingLotSize ,ParkingLotOwner parkingLotOwner)
     {
         this.parkingLotId = parkingLotId;
@@ -102,4 +103,5 @@ public class ParkingLot extends Observable implements Comparable{
         ParkingLot parkingLot = (ParkingLot)parkingLotObject;
         return parkingLot.parkingLotSize - this.parkingLotSize;
     }
+
 }
