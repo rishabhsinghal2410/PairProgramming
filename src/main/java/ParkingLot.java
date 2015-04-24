@@ -65,7 +65,6 @@ public class ParkingLot extends Observable implements Comparable {
     private boolean isParkingLotSpaceAvailable() {
         if (currentParkingOccupied < parkingLotSize)
             return true;
-
         return false;
     }
 
